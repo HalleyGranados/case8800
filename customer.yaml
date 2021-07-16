@@ -1,0 +1,11 @@
+steps:
+
+- id: buildDocker
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: gcloud
+  args: ['builds', 'submit', '--substitutions=_APP_TYPE=${_APP_TYPE}','--config','./.cloudbuild/docker.yaml']
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'customer', '--image', 'us-docker.pkg.dev/$PROJECT_ID/rookie/${_APP_TYPE}', '--region', 'us-central1', '--platform', 'managed', '--port', '9002', '--allow-unauthenticated']

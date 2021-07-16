@@ -1,0 +1,26 @@
+steps:
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: build-cometin
+  args:
+  - build
+  - -t
+  - us-docker.pkg.dev/$PROJECT_ID/rookie/${_APP_TYPE}
+  - .
+  dir: 'bestpractice/'
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: gcloud
+  args: 
+  - run
+  - deploy
+  - customer 
+  - --image
+  - us-docker.pkg.dev/$PROJECT_ID/rookie/${_APP_TYPE}
+  - --region
+  - us-central1
+  - --platform
+  - managed
+  - --port
+  - '9002'
+  - --allow-unauthenticated
